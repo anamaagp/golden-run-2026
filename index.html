@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Media Maratón 2026 · 10K + 21K</title>
+<style>
+:root{
+  --bg:#f5f7fa; --card:#fff; --text:#17202a; --muted:#65717d;
+  --line:#e3e8ee; --accent:#2463eb; --accent2:#163f9e;
+  --easy:#e8f5e9; --quality:#fff4df; --race:#fce8e8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.container{max-width:1050px;margin:auto;padding:28px 18px 50px}
+.hero{background:linear-gradient(135deg,#172b4d,#2463eb);color:#fff;border-radius:22px;padding:30px;margin-bottom:22px;box-shadow:0 10px 30px rgba(20,50,100,.14)}
+.hero h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)}
+.hero p{margin:6px 0;opacity:.92}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.stat{background:rgba(255,255,255,.12);padding:14px;border-radius:14px}
+.stat strong{display:block;font-size:22px}.stat span{font-size:13px;opacity:.85}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(20,30,40,.04)}
+h2{margin:0 0 15px;font-size:22px}
+.progress-wrap{height:12px;background:#e7ebf0;border-radius:99px;overflow:hidden}
+.progress{height:100%;width:0;background:var(--accent);transition:.25s}
+.progress-label{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-top:8px}
+.week{border:1px solid var(--line);border-radius:16px;margin:12px 0;overflow:hidden}
+.week-head{padding:15px 17px;background:#fafbfd;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.week-head strong{font-size:17px}.week-head span{font-size:13px;color:var(--muted)}
+.session{display:grid;grid-template-columns:32px 95px 1fr auto;gap:12px;align-items:start;padding:15px 17px;border-top:1px solid var(--line)}
+.session input{width:20px;height:20px;accent-color:var(--accent);margin-top:3px}
+.date{font-weight:700;font-size:14px}.type{font-size:12px;color:var(--muted);margin-top:2px}
+.desc{font-size:14px}.desc strong{display:block;margin-bottom:2px}
+.badge{font-size:11px;padding:5px 8px;border-radius:999px;white-space:nowrap;font-weight:700}
+.easy{background:var(--easy)}.quality{background:var(--quality)}.race{background:var(--race)}
+.done .desc,.done .date{text-decoration:line-through;opacity:.55}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+.targets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.target{border:1px solid var(--line);border-radius:14px;padding:15px}
+.target strong{display:block;font-size:20px}
+ul{padding-left:20px;margin-bottom:0}
+button{border:0;background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+button:hover{background:var(--accent2)}
+.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
+@media(max-width:760px){
+ .grid,.targets{grid-template-columns:repeat(2,1fr)}
+ .session{grid-template-columns:30px 1fr auto}.session .desc{grid-column:2/4}
+ .badge{grid-column:3;grid-row:1}
+}
+@media(max-width:480px){
+ .grid,.targets{grid-template-columns:1fr 1fr}.hero{padding:22px}.card{padding:17px}
+ .session{grid-template-columns:28px 1fr}.session .desc{grid-column:2}.badge{grid-column:2;justify-self:start}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<section class="hero">
+  <h1>Plan Media Maratón 2026</h1>
+  <p>10K de preparación · Media Maratón 25 de octubre</p>
+  <div class="grid">
+    <div class="stat"><strong>1:50</strong><span>Objetivo 21,1 km</span></div>
+    <div class="stat"><strong>5:13/km</strong><span>Ritmo objetivo aprox.</span></div>
+    <div class="stat"><strong>4 oct.</strong><span>Carrera 10K</span></div>
+    <div class="stat"><strong>25 oct.</strong><span>Media maratón</span></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Progreso</h2>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <div class="progress-label"><span id="progressText">0 de 0 sesiones completadas</span><span id="progressPct">0%</span></div>
+</section>
+
+<section class="card">
+<h2>Referencias</h2>
+<div class="targets">
+  <div class="target"><strong>50:04</strong><span>10K reciente</span></div>
+  <div class="target"><strong>22:57</strong><span>5K reciente</span></div>
+  <div class="target"><strong>1:55:49</strong><span>21K de entrenamiento</span></div>
+</div>
+<p class="note">El objetivo de 1:50 equivale aproximadamente a 5:13 min/km. Las sesiones deben ajustarse a sensaciones y recuperación.</p>
+</section>
+
+<section class="card">
+<h2>Calendario</h2>
+<div id="plan"></div>
+</section>
+
+<section class="card">
+<h2>Guía de intensidades</h2>
+<ul>
+<li><strong>Suave:</strong> ritmo cómodo, conversación posible. No convertirlo en una sesión rápida.</li>
+<li><strong>Controlado/umbral:</strong> esfuerzo sostenido, exigente pero sin llegar al máximo.</li>
+<li><strong>Ritmo objetivo:</strong> alrededor de 5:13/km en condiciones favorables.</li>
+<li><strong>Competencia:</strong> el 10K del 4 de octubre funciona como estímulo clave y referencia de estado de forma.</li>
+<li><strong>Descanso:</strong> si aparece dolor, especialmente el dolor que ya has tenido en la zona ciática, prioriza recuperación y no fuerces la sesión.</li>
+</ul>
+</section>
+
+<button onclick="resetProgress()">Reiniciar progreso</button>
+<div class="footer">Tu progreso se guarda automáticamente en este navegador.</div>
+</div>
+
+<script>
+const weeks = [
+{title:"Semana 1 · 21–27 septiembre", sessions:[
+ ["21 sep","Descanso","Recuperación y movilidad suave.","easy"],
+ ["22 sep","Calidad","6–7 km: calentamiento + 4 × 1 km a ritmo controlado, recuperación 2 min + enfriamiento.","quality"],
+ ["24 sep","Suave","7 km cómodos, sin buscar ritmo.","easy"],
+ ["27 sep","Fondo","15 km suaves. Últimos 3 km ligeramente más alegres si te sientes bien.","easy"]
+]},
+{title:"Semana 2 · 28 septiembre–4 octubre", sessions:[
+ ["29 sep","Suave","6 km muy cómodos + 4 progresivos cortos.","easy"],
+ ["1 oct","Activación","5 km suaves con 3 × 2 min a ritmo de 10K, sin acumular fatiga.","quality"],
+ ["3 oct","Descanso","Descanso completo o caminata suave.","easy"],
+ ["4 oct","10K · COMPETENCIA","Carrera 10K. Úsala como competencia y referencia de forma. Calienta bien y corre de manera progresiva.","race"]
+]},
+{title:"Semana 3 · 5–11 octubre", sessions:[
+ ["6 oct","Recuperación","5–6 km muy suaves. Si hay fatiga de la carrera, reduce o descansa.","easy"],
+ ["8 oct","Suave","7 km cómodos + 4 progresivos.","easy"],
+ ["11 oct","Fondo","19 km suaves y controlados. No convertirlo en una carrera.","easy"]
+]},
+{title:"Semana 4 · 12–18 octubre", sessions:[
+ ["13 oct","Suave","6–7 km cómodos.","easy"],
+ ["15 oct","Ritmo objetivo","8 km: 2 km suaves + 4 km cerca de 5:13/km + 2 km suaves.","quality"],
+ ["18 oct","Fondo controlado","10 km controlados. Debe dejarte con sensación de poder continuar.","easy"]
+]},
+{title:"Semana 5 · 19–25 octubre", sessions:[
+ ["20 oct","Suave","5–6 km muy cómodos + 4 progresivos cortos.","easy"],
+ ["22 oct","Activación","5 km con 3 × 1 km a ritmo objetivo, recuperación amplia. Terminar con buenas sensaciones.","quality"],
+ ["24 oct","Descanso","Descanso completo. Preparar hidratación, alimentación, ropa y logística.","easy"],
+ ["25 oct","MEDIA MARATÓN","21,1 km · objetivo 1:50. Salida controlada; buscar acercarte progresivamente al ritmo objetivo.","race"]
+]}
+];
+
+const key="hm2026_progress";
+let done=JSON.parse(localStorage.getItem(key)||"{}");
+let idx=0;
+
+function render(){
+ const plan=document.getElementById("plan"); plan.innerHTML="";
+ weeks.forEach((w,wi)=>{
+   const box=document.createElement("div"); box.className="week";
+   const head=document.createElement("div"); head.className="week-head";
+   head.innerHTML=`<strong>${w.title}</strong><span>${w.sessions.length} sesiones</span>`;
+   box.appendChild(head);
+   w.sessions.forEach((s,si)=>{
+     const id=`${wi}-${si}`;
+     const row=document.createElement("label"); row.className="session"+(done[id]?" done":"");
+     row.innerHTML=`<input type="checkbox" ${done[id]?"checked":""} aria-label="Marcar sesión completada">
+       <div><div class="date">${s[0]}</div><div class="type">${s[1]}</div></div>
+       <div class="desc"><strong>${s[1]}</strong>${s[2]}</div>
+       <span class="badge ${s[3]}">${s[3]==="race"?"COMPETENCIA":s[3]==="quality"?"CALIDAD":"SUAVE"}</span>`;
+     row.querySelector("input").addEventListener("change",e=>{
+       done[id]=e.target.checked; localStorage.setItem(key,JSON.stringify(done)); render();
+     });
+     box.appendChild(row);
+   });
+   plan.appendChild(box);
+ });
+ updateProgress();
+}
+
+function updateProgress(){
+ const total=weeks.reduce((a,w)=>a+w.sessions.length,0);
+ const completed=Object.values(done).filter(Boolean).length;
+ const pct=Math.round(completed/total*100);
+ document.getElementById("progress").style.width=pct+"%";
+ document.getElementById("progressText").textContent=`${completed} de ${total} sesiones completadas`;
+ document.getElementById("progressPct").textContent=pct+"%";
+}
+function resetProgress(){
+ if(confirm("¿Seguro que quieres borrar todas las sesiones marcadas?")){
+   done={};localStorage.removeItem(key);render();
+ }
+}
+render();
+</script>
+</body>
+</html>
